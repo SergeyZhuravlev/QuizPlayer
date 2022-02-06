@@ -21,54 +21,54 @@ namespace QuizPlayer
   /// </summary>
   public partial class App : Application
   {
-    private static readonly TestTool tool = new TestTool();
+    private static readonly QuizTool tool = new QuizTool();
     private void Application_Startup(object sender, StartupEventArgs ea)
     {
       /*JsonSerializerOptions options = new() { PropertyNameCaseInsensitive = true, AllowTrailingCommas = true, ReadCommentHandling = JsonCommentHandling.Skip, WriteIndented = true };
-      var a = new Test() { TestCaption = "TestCaption", Questions = Enumerable.Repeat(new Question() { Text = "QuestionText", Answers = Enumerable.Repeat(new Answer() { Text = "AnswerText", RightAnswer = false }, 1).ToList() }, 1).ToList() };
-      File.WriteAllText(TestTool.TestFileNameWithoutExtension+".json", JsonSerializer.Serialize(a, options));
+      var a = new Quiz() { QuizCaption = "QuizCaption", Questions = Enumerable.Repeat(new Question() { Text = "QuestionText", Answers = Enumerable.Repeat(new Answer() { Text = "AnswerText", RightAnswer = false }, 1).ToList() }, 1).ToList() };
+      File.WriteAllText(QuizTool.QuizFileNameWithoutExtension+".json", JsonSerializer.Serialize(a, options));
       Current.Shutdown();
       int i = 5;
       if (i == 5)
         return;*/
       try
       {
-        var convertResult = tool.TryConvertTest();
+        var convertResult = tool.TryConvertQuiz();
         switch (convertResult)
         {
-          case ConvertType.CompiledTest:
-            ShowMessageAndExit(MessageType.Success, $"Test '{tool.TestFileSource}' successfuly compiled to '{tool.TestFileCompiled}'");
+          case ConvertType.CompiledQuiz:
+            ShowMessageAndExit(MessageType.Success, $"Quiz '{tool.QuizFileSource}' successfuly compiled to '{tool.QuizFileCompiled}'");
             return;
-          case ConvertType.DecompiledTest:
-            ShowMessageAndExit(MessageType.Success, $"Test '{tool.TestFileSourceForDecompile}' successfuly decompiled to '{tool.TestFileSource}'");
+          case ConvertType.DecompiledQuiz:
+            ShowMessageAndExit(MessageType.Success, $"Quiz '{tool.QuizFileSourceForDecompile}' successfuly decompiled to '{tool.QuizFileSource}'");
             return;
           case ConvertType.NothingToConvert:
             break;
         }
       } catch(Exception e)
       {
-        ShowMessageAndExit(MessageType.Error, $"Test compiling / decompiling error: '{e.Message}' for file '{TestTool.TestFileNameWithoutExtension}.*'");
+        ShowMessageAndExit(MessageType.Error, $"Quiz compiling / decompiling error: '{e.Message}' for file '{QuizTool.QuizFileNameWithoutExtension}.*'");
         return;
       }
-      Test test;
+      Quiz quiz;
       try
       {
-        test = tool.GetTest();
+        quiz = tool.GetQuiz();
       }
       catch (System.IO.FileNotFoundException)
       {
-        ShowMessageAndExit(MessageType.Error, $"Test file not found error. {Environment.NewLine}Supported file names: test.json, test.bin, test.decompile. {Environment.NewLine}For example: '{tool.TestFileCompiled}'");
+        ShowMessageAndExit(MessageType.Error, $"Quiz file not found error. {Environment.NewLine}Supported file names: quiz.json, quiz.bin, quiz.decompile. {Environment.NewLine}For example: '{tool.QuizFileCompiled}'");
         return;
       }
       catch (Exception e)
       {
-        ShowMessageAndExit(MessageType.Error, $"Test opening error: '{e.Message}'");
+        ShowMessageAndExit(MessageType.Error, $"Quiz opening error: '{e.Message}'");
         return;
       }
-      var testModel = new TestModel(test.RandomizedQuestions);
-      var testViewModel= new TestViewModel(test.TestCaption, testModel);
+      var quizModel = new QuizModel(quiz.RandomizedQuestions);
+      var quizViewModel= new QuizViewModel(quiz.QuizCaption, quizModel);
       var window = new MainWindow();
-      window.DataContext = testViewModel;
+      window.DataContext = quizViewModel;
       window.Show();
     }
 

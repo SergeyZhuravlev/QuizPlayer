@@ -1,34 +1,34 @@
 {
-  "TestCaption": "TestCaption",
+  "QuizCaption": "QuizCaption",
   "Questions": [
     {
-      "Text": "QuestionText",
+      "Text": "QuizQuestion1",
       "Answers": [
         {
-          "Text": "AnswerText1"
+          "Text": "QuizAnswer1"
         },
         {
-          "Text": "AnswerText2",
+          "Text": "QuizAnswer2",
           "RightAnswer": true
         }
       ]
     },
     {
-      "Text": "QuestionText2",
+      "Text": "QuizQuestion2",
       "Answers": [
         {
-          "Text": "AnswerText1"
+          "Text": "QuizAnswer1"
         },
         {
-          "Text": "AnswerText2",
+          "Text": "QuizAnswer2",
           "RightAnswer": true
         },
         {
-          "Text": "AnswerText3",
+          "Text": "QuizAnswer3",
           "RightAnswer": true
         },
         {
-          "Text": "AnswerText4"
+          "Text": "QuizAnswer4"
         }
       ]
     }

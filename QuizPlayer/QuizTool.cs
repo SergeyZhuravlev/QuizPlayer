@@ -26,109 +26,109 @@ namespace QuizPlayer
 
   public enum ConvertType
   {
-    CompiledTest,
-    DecompiledTest,
+    CompiledQuiz,
+    DecompiledQuiz,
     NothingToConvert
   }
 
-  public class TestTool
+  public class QuizTool
   {
-    public static readonly string TestFileNameWithoutExtension = Path.Combine(AppContext.BaseDirectory, "test");
+    public static readonly string QuizFileNameWithoutExtension = Path.Combine(AppContext.BaseDirectory, "quiz");
 
-    public readonly string TestFileSource = $"{TestFileNameWithoutExtension}.json";
-    public readonly string TestFileCompiled = $"{TestFileNameWithoutExtension}.bin";
-    public readonly string TestFileSourceForDecompile = $"{TestFileNameWithoutExtension}.decompile";
-    public ConvertType TryConvertTest()
+    public readonly string QuizFileSource = $"{QuizFileNameWithoutExtension}.json";
+    public readonly string QuizFileCompiled = $"{QuizFileNameWithoutExtension}.bin";
+    public readonly string QuizFileSourceForDecompile = $"{QuizFileNameWithoutExtension}.decompile";
+    public ConvertType TryConvertQuiz()
     {
-      if (File.Exists(TestFileSource))
+      if (File.Exists(QuizFileSource))
       {
         Compile();
-        return ConvertType.CompiledTest;
+        return ConvertType.CompiledQuiz;
       }
-      if (File.Exists(TestFileSourceForDecompile))
+      if (File.Exists(QuizFileSourceForDecompile))
       {
         Decompile();
-        return ConvertType.DecompiledTest;
+        return ConvertType.DecompiledQuiz;
       }
       return ConvertType.NothingToConvert;
     }
 
     private void Decompile()
     {
-      var compiled = File.ReadAllBytes(TestFileSourceForDecompile);
+      var compiled = File.ReadAllBytes(QuizFileSourceForDecompile);
       var source = compiled.Recrypt();
       try
       {
-        _ = GetTest(source);
+        _ = GetQuiz(source);
       } catch
       {
-        throw new Exception($"File '{TestFileSourceForDecompile}' not contain compiled .bin test file. It file broken or wrongly renamed from *.json file. You should rename only *.bin file to *.decompile file");
+        throw new Exception($"File '{QuizFileSourceForDecompile}' not contain compiled .bin quiz file. It file broken or wrongly renamed from *.json file. You should rename only *.bin file to *.decompile file");
       }
-      File.WriteAllBytes(TestFileSource, source);
-      File.Delete(TestFileSourceForDecompile);
+      File.WriteAllBytes(QuizFileSource, source);
+      File.Delete(QuizFileSourceForDecompile);
     }
 
     private void Compile()
     {
-      var source = File.ReadAllBytes(TestFileSource);
-      _ = GetTest(source);
-      File.WriteAllBytes(TestFileCompiled, source.Recrypt());
-      File.Delete(TestFileSource);
+      var source = File.ReadAllBytes(QuizFileSource);
+      _ = GetQuiz(source);
+      File.WriteAllBytes(QuizFileCompiled, source.Recrypt());
+      File.Delete(QuizFileSource);
     }
 
-    public Test GetTest()
+    public Quiz GetQuiz()
     {
-      if (!File.Exists(TestFileCompiled))
-        throw new FileNotFoundException(TestFileCompiled);
+      if (!File.Exists(QuizFileCompiled))
+        throw new FileNotFoundException(QuizFileCompiled);
 
-      return GetTest(File.ReadAllBytes(TestFileCompiled).Recrypt());
+      return GetQuiz(File.ReadAllBytes(QuizFileCompiled).Recrypt());
     }
 
-    private static Test GetTest(byte[] utf8Test)
+    private static Quiz GetQuiz(byte[] utf8Quiz)
     {
-      Utf8JsonReader jsonUtfReader = new(utf8Test, new() { AllowTrailingCommas = true, CommentHandling = JsonCommentHandling.Skip });
+      Utf8JsonReader jsonUtfReader = new(utf8Quiz, new() { AllowTrailingCommas = true, CommentHandling = JsonCommentHandling.Skip });
       JsonSerializerOptions options = new() { PropertyNameCaseInsensitive = true, AllowTrailingCommas = true, ReadCommentHandling = JsonCommentHandling.Skip, WriteIndented = true };
-      var test = JsonSerializer.Deserialize<Test>(ref jsonUtfReader, options);
-      CheckTest(test);
-      return test;
+      var quiz = JsonSerializer.Deserialize<Quiz>(ref jsonUtfReader, options);
+      CheckQuiz(quiz);
+      return quiz;
     }
 
-    private static void CheckTest(Test test)
+    private static void CheckQuiz(Quiz quiz)
     {
-      if (string.IsNullOrWhiteSpace(test.TestCaption))
-        throw new Exception("Empty 'TestCaption' field");
-      if (test.Questions is null || test.Questions.Count == 0)
+      if (string.IsNullOrWhiteSpace(quiz.QuizCaption))
+        throw new Exception("Empty 'QuizCaption' field");
+      if (quiz.Questions is null || quiz.Questions.Count == 0)
         throw new Exception("Empty 'Questions' list");
       {
-        if (test.Questions
+        if (quiz.Questions
           .Select((question, index) => new { question, index })
           .FirstOrDefault(q => q.question.Answers is null || q.question.Answers.Count < 2)
           is var failed && !(failed is null))
             throw new Exception($"Empty or small amount in 'Answers' list in {failed.index} question");
       }
       { 
-        if (test.Questions
+        if (quiz.Questions
           .Select((question, index) => new { question, index })
           .FirstOrDefault(q => string.IsNullOrWhiteSpace(q.question.Text))
           is var failed && !(failed is null))
             throw new Exception($"Empty question 'Text' field in {failed.index} question");
       }
       {
-        if (test.Questions
+        if (quiz.Questions
           .Select((question, index) => new { question, index })
           .FirstOrDefault(q => q.question.Answers.Any(a => string.IsNullOrWhiteSpace(a.Text)))
           is var failed && !(failed is null))
             throw new Exception($"Empty answer 'Text' field in some of answer in {failed.index} question");
       }
       {
-        if (test.Questions
+        if (quiz.Questions
           .Select((question, index) => new { question, index })
           .FirstOrDefault(q => q.question.Answers.All(a => a.RightAnswer))
           is var failed && !(failed is null))
             throw new Exception($"See 'RightAnswer' field. All answers is right in {failed.index} question");
       }
       {
-        if (test.Questions
+        if (quiz.Questions
           .Select((question, index) => new { question, index })
           .FirstOrDefault(q => q.question.Answers.All(a => !a.RightAnswer)) 
           is var failed && !(failed is null))

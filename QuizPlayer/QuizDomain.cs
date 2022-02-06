@@ -27,9 +27,9 @@ namespace QuizPlayer
     public bool UserRightAnswered => Answers.All(a => a.UserRightAnswered);
   }
 
-  public class Test
+  public class Quiz
   {
-    public string TestCaption { get; set; }
+    public string QuizCaption { get; set; }
     public List<Question> Questions { get; set; }
 
     [JsonIgnore]

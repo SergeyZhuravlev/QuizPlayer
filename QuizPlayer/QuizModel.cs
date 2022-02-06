@@ -3,12 +3,12 @@ using System.Linq;
 
 namespace QuizPlayer
 {
-  class TestModel
+  class QuizModel
   {
     private List<Question> Questions { get; }
     private IEnumerator<Question> questionEnumerator;
 
-    public TestModel(List<Question> questions)
+    public QuizModel(List<Question> questions)
     {
       Questions = questions;
       questionEnumerator = Questions.AsEnumerable().GetEnumerator();
@@ -26,11 +26,11 @@ namespace QuizPlayer
       else
       {
         CurrentQuestion = new() { Text = string.Empty, Answers = new() { new() { Text = string.Empty } } };
-        CompletedTest = true;
+        CompletedQuiz = true;
       }
     }
 
-    public bool CompletedTest { get; set; }
+    public bool CompletedQuiz { get; set; }
     public int QuestionCount => Questions.Count;
     public int RightAnsweredQuestionCount => Questions.Count(q => q.UserRightAnswered);
     public int RightAnsweredPercent => (int)(100.0 * RightAnsweredQuestionCount / QuestionCount);
