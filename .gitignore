@@ -5,7 +5,6 @@
 *.suo
 *.user
 *.sln.docstates
-.vs
 
 # Build results
 
@@ -46,6 +45,7 @@ x64/
 *.scc
 
 # Visual C++ cache files
+.vs/
 ipch/
 *.aps
 *.ncb
