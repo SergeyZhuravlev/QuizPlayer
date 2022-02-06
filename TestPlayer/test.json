@@ -1,0 +1,36 @@
+{
+  "TestCaption": "TestCaption",
+  "Questions": [
+    {
+      "Text": "QuestionText",
+      "Answers": [
+        {
+          "Text": "AnswerText1"
+        },
+        {
+          "Text": "AnswerText2",
+          "RightAnswer": true
+        }
+      ]
+    },
+    {
+      "Text": "QuestionText2",
+      "Answers": [
+        {
+          "Text": "AnswerText1"
+        },
+        {
+          "Text": "AnswerText2",
+          "RightAnswer": true
+        },
+        {
+          "Text": "AnswerText3",
+          "RightAnswer": true
+        },
+        {
+          "Text": "AnswerText4"
+        }
+      ]
+    }
+  ]
+}
