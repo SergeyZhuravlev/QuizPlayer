@@ -10,11 +10,11 @@ namespace QuizPlayer
 
     public TestViewModel(string testCaption, TestModel testModel)
     {
-      TestCaption = $"QuizPlayer: {testCaption}";
+      Caption = $"QuizPlayer: {testCaption}";
       TestModel = testModel;
     }
 
-    public string TestCaption { get; }
+    public string Caption { get; }
 
 #region Use on question stage
     public Question CurrentQuestion => TestModel.CurrentQuestion;
