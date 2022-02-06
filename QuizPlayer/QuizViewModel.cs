@@ -28,22 +28,34 @@ namespace QuizPlayer
     public int RightAnsweredQuestionCount => QuizModel.RightAnsweredQuestionCount;
     public int RightAnsweredPercent => QuizModel.RightAnsweredPercent;
     public IEnumerable<string> WrongQuestionList => QuizModel.WrongQuestionList;
-#endregion
+    #endregion
 
-    public DelegateCommand AnswerQuestion => new(() =>
+    public string ButtonCaption => ShowCurrentQuestionResult ? "Next Question" : "Answer";
+
+    public DelegateCommand ButtonCommand => new(() =>
+    {
+      if (ShowCurrentQuestionResult)
+        NextQuestion();
+      else
+        AnswerQuestion();
+    });
+
+    private void AnswerQuestion()
     {
       ShowCurrentQuestionResult = true;
       RaisePropertyChanged(nameof(ShowCurrentQuestionResult));
-    });
+      RaisePropertyChanged(nameof(ButtonCaption));
+    }
 
-    public DelegateCommand NextQuestion => new(() =>
+    private void NextQuestion()
     {
       ShowCurrentQuestionResult = false;
       QuizModel.NextQuestion();
       RaisePropertyChanged(nameof(ShowCurrentQuestionResult));
+      RaisePropertyChanged(nameof(ButtonCaption));
       RaisePropertyChanged(nameof(CurrentQuestion));
       RaisePropertyChanged(nameof(CompletedQuiz));
-    });
+    }
 
   }
 }
