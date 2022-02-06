@@ -10,7 +10,7 @@ namespace TestPlayer
 
     public TestViewModel(string testCaption, TestModel testModel)
     {
-      TestCaption = testCaption;
+      TestCaption = $"QuizPlayer: {testCaption}";
       TestModel = testModel;
     }
 
