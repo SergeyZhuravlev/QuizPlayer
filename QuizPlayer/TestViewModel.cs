@@ -2,7 +2,7 @@
 using Prism.Mvvm;
 using System.Collections.Generic;
 
-namespace TestPlayer
+namespace QuizPlayer
 {
   class TestViewModel : BindableBase
   {

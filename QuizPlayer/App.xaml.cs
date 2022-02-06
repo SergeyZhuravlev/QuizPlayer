@@ -8,7 +8,7 @@ using System.Windows;
 using System.Text.Json;
 using System.IO;
 
-namespace TestPlayer
+namespace QuizPlayer
 {
   enum MessageType
   {
@@ -74,7 +74,7 @@ namespace TestPlayer
 
     private void ShowMessageAndExit(MessageType type, string message)
     {
-      MessageBox.Show(message, "TestPlayer", MessageBoxButton.OK, type == MessageType.Success ? MessageBoxImage.Information : MessageBoxImage.Error);
+      MessageBox.Show(message, "QuizPlayer", MessageBoxButton.OK, type == MessageType.Success ? MessageBoxImage.Information : MessageBoxImage.Error);
       Current.Shutdown();
     }
   }

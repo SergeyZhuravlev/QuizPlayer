@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text.Json.Serialization;
 
-namespace TestPlayer
+namespace QuizPlayer
 {
   public class Answer
   {
