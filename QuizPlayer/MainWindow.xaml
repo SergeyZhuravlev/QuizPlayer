@@ -6,11 +6,62 @@
         xmlns:local="clr-namespace:QuizPlayer"
         mc:Ignorable="d"
         Title="{Binding Path=Caption}" Height="450" Width="800">
-    <Grid>
+    <Window.Resources>
+        <SolidColorBrush x:Key="TextColor" Color="Black" />
+        <SolidColorBrush x:Key="BorderColor" Color="DarkBlue" />
+        <LinearGradientBrush x:Key="BackgroundColor" StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#9999FF" Offset="0" />
+            <GradientStop Color="#CCCCFF" Offset="1"/>
+        </LinearGradientBrush>
+        <Style x:Key="RoundedHoverButton" TargetType="Button">
+            <Setter Property="Background" Value="LightBlue" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="Border" CornerRadius="10" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="LightGreen" TargetName="Border" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid Background="{StaticResource BackgroundColor}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="11*"/>
-            <ColumnDefinition Width="149*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="100*"/>
+            <ColumnDefinition Width="15*"/>
+            <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*" />
+            <RowDefinition Height="40*" />
+            <RowDefinition Height="5*" />
+            <RowDefinition Height="5*" />
+            <RowDefinition Height="100*" />
+            <RowDefinition Height="5*" />
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="10*" />
+        </Grid.RowDefinitions>
+        <TextBlock TextAlignment="Right" FontSize="32" FontWeight="Bold" Grid.Column="1" Grid.Row="1" Text="{Binding Path=QuestionNumber}"/>
+        <TextBlock Grid.Column="2" Grid.Row="1" FontSize="16" FontWeight="SemiBold" TextWrapping="WrapWithOverflow" VerticalAlignment="Stretch" Text="{Binding Path=CurrentQuestion.Text}"/>
+        <Border Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="0" Grid.RowSpan="3" Background="Transparent" Margin="2,2,2,2" BorderBrush="{StaticResource BorderColor}" BorderThickness="1" VerticalAlignment="Stretch"/>
+        <Border Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="3" Grid.RowSpan="2" Background="Transparent" Margin="2,2,2,2" BorderBrush="{StaticResource BorderColor}" BorderThickness="1" VerticalAlignment="Stretch"/>
+        <ListBox Grid.Column="2" Grid.Row="4" Background="Transparent" BorderThickness="0" ItemsSource="{Binding Path=CurrentQuestion.Answers}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <CheckBox FontWeight="SemiBold" VerticalAlignment="Stretch" IsChecked="{Binding UserAnswer, Mode=TwoWay}">
+                        <TextBlock Text="{Binding Text}" FontWeight="SemiBold" TextWrapping="WrapWithOverflow" VerticalAlignment="Stretch" />
+                    </CheckBox>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button Grid.Column="3" Grid.Row="6" Background="DarkGray" Foreground="{StaticResource TextColor}" FontWeight="SemiBold" Style="{StaticResource RoundedHoverButton}" Content="{Binding Path=ButtonCaption}" />
     </Grid>
 </Window>

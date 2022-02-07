@@ -99,13 +99,6 @@ namespace QuizPlayer
         throw new Exception("Empty 'QuizCaption' field");
       if (quiz.Questions is null || quiz.Questions.Count == 0)
         throw new Exception("Empty 'Questions' list");
-      {
-        if (quiz.Questions
-          .Select((question, index) => new { question, index })
-          .FirstOrDefault(q => q.question.Answers is null || q.question.Answers.Count < 2)
-          is var failed && !(failed is null))
-            throw new Exception($"Empty or small amount in 'Answers' list in {failed.index} question");
-      }
       { 
         if (quiz.Questions
           .Select((question, index) => new { question, index })
@@ -116,23 +109,30 @@ namespace QuizPlayer
       {
         if (quiz.Questions
           .Select((question, index) => new { question, index })
+          .FirstOrDefault(q => q.question.Answers is null || q.question.Answers.Count < 2)
+          is var failed && !(failed is null))
+          throw new Exception($"Empty or small amount in 'Answers' list in {failed.index} question: '{failed.question.Text}'");
+      }
+      {
+        if (quiz.Questions
+          .Select((question, index) => new { question, index })
           .FirstOrDefault(q => q.question.Answers.Any(a => string.IsNullOrWhiteSpace(a.Text)))
           is var failed && !(failed is null))
-            throw new Exception($"Empty answer 'Text' field in some of answer in {failed.index} question");
+            throw new Exception($"Empty answer 'Text' field in some of answer in {failed.index} question: '{failed.question.Text}'");
       }
       {
         if (quiz.Questions
           .Select((question, index) => new { question, index })
           .FirstOrDefault(q => q.question.Answers.All(a => a.RightAnswer))
           is var failed && !(failed is null))
-            throw new Exception($"See 'RightAnswer' field. All answers is right in {failed.index} question");
+            throw new Exception($"See 'RightAnswer' field. All answers is right in {failed.index} question: '{failed.question.Text}'");
       }
       {
         if (quiz.Questions
           .Select((question, index) => new { question, index })
           .FirstOrDefault(q => q.question.Answers.All(a => !a.RightAnswer)) 
           is var failed && !(failed is null))
-            throw new Exception($"See 'RightAnswer' field. All answers is not right in {failed.index} question");
+            throw new Exception($"See 'RightAnswer' field. All answers is not right in {failed.index} question: '{failed.question.Text}'");
       }
     }
   }

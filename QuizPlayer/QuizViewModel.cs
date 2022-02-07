@@ -18,6 +18,7 @@ namespace QuizPlayer
 
 #region Use on question stage
     public Question CurrentQuestion => QuizModel.CurrentQuestion;
+    public string QuestionNumber => QuizModel.QuestionNumber + ".";
     public bool ShowCurrentQuestionResult { get; set; }
 #endregion
 
@@ -38,7 +39,8 @@ namespace QuizPlayer
         NextQuestion();
       else
         AnswerQuestion();
-    });
+    },
+    () => CurrentQuestion.UserAnswered);
 
     private void AnswerQuestion()
     {
@@ -54,6 +56,7 @@ namespace QuizPlayer
       RaisePropertyChanged(nameof(ShowCurrentQuestionResult));
       RaisePropertyChanged(nameof(ButtonCaption));
       RaisePropertyChanged(nameof(CurrentQuestion));
+      RaisePropertyChanged(nameof(QuestionNumber));
       RaisePropertyChanged(nameof(CompletedQuiz));
     }
 

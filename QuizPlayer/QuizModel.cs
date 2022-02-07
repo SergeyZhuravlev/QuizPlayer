@@ -22,6 +22,7 @@ namespace QuizPlayer
       if (questionEnumerator.MoveNext())
       {
         CurrentQuestion = questionEnumerator.Current;
+        ++QuestionNumber;
       }
       else
       {
@@ -30,7 +31,8 @@ namespace QuizPlayer
       }
     }
 
-    public bool CompletedQuiz { get; set; }
+    public bool CompletedQuiz { get; private set; }
+    public int QuestionNumber { get; private set; }
     public int QuestionCount => Questions.Count;
     public int RightAnsweredQuestionCount => Questions.Count(q => q.UserRightAnswered);
     public int RightAnsweredPercent => (int)(100.0 * RightAnsweredQuestionCount / QuestionCount);

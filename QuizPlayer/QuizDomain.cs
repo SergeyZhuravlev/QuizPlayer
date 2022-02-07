@@ -25,6 +25,9 @@ namespace QuizPlayer
 
     [JsonIgnore]
     public bool UserRightAnswered => Answers.All(a => a.UserRightAnswered);
+
+    [JsonIgnore]
+    public bool UserAnswered => Answers.Any(a => a.UserAnswer);
   }
 
   public class Quiz
