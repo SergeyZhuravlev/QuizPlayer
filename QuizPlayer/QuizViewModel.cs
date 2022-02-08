@@ -1,10 +1,16 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using System.Collections.Generic;
+using System.Windows;
 
 namespace QuizPlayer
 {
-  class QuizViewModel : BindableBase
+  public interface IAnswerChanged
+  {
+    void AnswerChanged();
+  }
+
+  class QuizViewModel : BindableBase, IAnswerChanged
   {
     private QuizModel QuizModel { get; }
 
@@ -40,7 +46,15 @@ namespace QuizPlayer
       else
         AnswerQuestion();
     },
-    () => CurrentQuestion.UserAnswered);
+    () =>
+    {
+      return CurrentQuestion.UserAnswered;
+    });
+
+    public void AnswerChanged()
+    {
+      RaisePropertyChanged(nameof(ButtonCommand));
+    }
 
     private void AnswerQuestion()
     {

@@ -26,7 +26,7 @@ namespace QuizPlayer
       }
       else
       {
-        CurrentQuestion = new() { Text = string.Empty, Answers = new() { new() { Text = string.Empty } } };
+        CurrentQuestion = new() { Text = string.Empty, Answers = new() { } };
         CompletedQuiz = true;
       }
     }

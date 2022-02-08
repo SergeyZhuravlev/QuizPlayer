@@ -62,12 +62,15 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="100*"/>
                         </Grid.ColumnDefinitions>
-                        <CheckBox Grid.Column="0" FontWeight="SemiBold" IsChecked="{Binding UserAnswer, Mode=TwoWay}"/>
+                        <!-- Checked="AnswerChanged" Unchecked="AnswerChanged" -->
+                        <!-- Checked="{Binding Path=AnswerChanged}" Unchecked="{Binding Path=AnswerChanged}" -->
+                        <!-- Checked="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:QuizViewModel}}, Path=AnswerChanged}" Unchecked="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:QuizViewModel}}, Path=AnswerChanged}" -->
+                        <CheckBox Grid.Column="0" FontWeight="SemiBold" IsChecked="{Binding UserAnswer, Mode=OneWayToSource}" Checked="AnswerChanged" Unchecked="AnswerChanged" />
                         <TextBlock Grid.Column="2" Margin="5,1,1,1" FontSize="16" Text="{Binding Text}" FontWeight="SemiBold" TextWrapping="WrapWithOverflow" VerticalAlignment="Stretch" />
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Button Grid.Column="3" Grid.Row="6" Background="DarkGray" Foreground="{StaticResource TextColor}" FontWeight="Bold" Style="{StaticResource RoundedHoverButton}" Content="{Binding Path=ButtonCaption}" />
+        <Button Grid.Column="3" Grid.Row="6" Background="DarkGray" Foreground="{StaticResource TextColor}" FontWeight="Bold" Style="{StaticResource RoundedHoverButton}" Content="{Binding Path=ButtonCaption}" Command="{Binding Path=ButtonCommand}" />
     </Grid>
 </Window>
