@@ -14,6 +14,9 @@ namespace QuizPlayer
     public bool UserAnswer { get; set; }
 
     [JsonIgnore]
+    public bool UserAnswered { get; set; }
+
+    [JsonIgnore]
     public bool UserRightAnswered => UserAnswer == RightAnswer;
   }
 
@@ -27,7 +30,13 @@ namespace QuizPlayer
     public bool UserRightAnswered => Answers.All(a => a.UserRightAnswered);
 
     [JsonIgnore]
-    public bool UserAnswered => Answers.Any(a => a.UserAnswer);
+    public bool UserAnyAnswered => Answers.Any(a => a.UserAnswer);
+
+    public void UserAnswered()
+    {
+      foreach (var answer in Answers)
+        answer.UserAnswered = true;
+    }
   }
 
   public class Quiz

@@ -62,9 +62,6 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="100*"/>
                         </Grid.ColumnDefinitions>
-                        <!-- Checked="AnswerChanged" Unchecked="AnswerChanged" -->
-                        <!-- Checked="{Binding Path=AnswerChanged}" Unchecked="{Binding Path=AnswerChanged}" -->
-                        <!-- Checked="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:QuizViewModel}}, Path=AnswerChanged}" Unchecked="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:QuizViewModel}}, Path=AnswerChanged}" -->
                         <CheckBox Grid.Column="0" FontWeight="SemiBold" IsChecked="{Binding UserAnswer, Mode=OneWayToSource}" Checked="AnswerChanged" Unchecked="AnswerChanged" />
                         <TextBlock Grid.Column="2" Margin="5,1,1,1" FontSize="16" Text="{Binding Text}" FontWeight="SemiBold" TextWrapping="WrapWithOverflow" VerticalAlignment="Stretch" />
                     </Grid>

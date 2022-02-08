@@ -14,6 +14,8 @@ namespace QuizPlayer
   {
     private QuizModel QuizModel { get; }
 
+    private bool ShowCurrentQuestionResult { get; set; }
+
     public QuizViewModel(string quizCaption, QuizModel quizModel)
     {
       Caption = $"QuizPlayer: {quizCaption}";
@@ -22,22 +24,20 @@ namespace QuizPlayer
 
     public string Caption { get; }
 
-#region Use on question stage
+    #region Use on question stage
     public Question CurrentQuestion => QuizModel.CurrentQuestion;
     public string QuestionNumber => QuizModel.QuestionNumber + ".";
-    public bool ShowCurrentQuestionResult { get; set; }
-#endregion
+    public string ButtonCaption => ShowCurrentQuestionResult ? "Next Question" : "Answer";
+    #endregion
 
     public bool CompletedQuiz => QuizModel.CompletedQuiz;
 
-#region Use on completed quiz stage
+    #region Use on completed quiz stage
     public int QuestionCount => QuizModel.QuestionCount;
     public int RightAnsweredQuestionCount => QuizModel.RightAnsweredQuestionCount;
     public int RightAnsweredPercent => QuizModel.RightAnsweredPercent;
     public IEnumerable<string> WrongQuestionList => QuizModel.WrongQuestionList;
     #endregion
-
-    public string ButtonCaption => ShowCurrentQuestionResult ? "Next Question" : "Answer";
 
     public DelegateCommand ButtonCommand => new(() =>
     {
@@ -48,7 +48,7 @@ namespace QuizPlayer
     },
     () =>
     {
-      return CurrentQuestion.UserAnswered;
+      return CurrentQuestion.UserAnyAnswered;
     });
 
     public void AnswerChanged()
@@ -59,7 +59,7 @@ namespace QuizPlayer
     private void AnswerQuestion()
     {
       ShowCurrentQuestionResult = true;
-      RaisePropertyChanged(nameof(ShowCurrentQuestionResult));
+      CurrentQuestion.UserAnswered();
       RaisePropertyChanged(nameof(ButtonCaption));
     }
 
@@ -67,7 +67,6 @@ namespace QuizPlayer
     {
       ShowCurrentQuestionResult = false;
       QuizModel.NextQuestion();
-      RaisePropertyChanged(nameof(ShowCurrentQuestionResult));
       RaisePropertyChanged(nameof(ButtonCaption));
       RaisePropertyChanged(nameof(CurrentQuestion));
       RaisePropertyChanged(nameof(QuestionNumber));
