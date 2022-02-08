@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace QuizPlayer
 {
-  class QuizModel
+  public class QuizModel
   {
     private IReadOnlyCollection<IQuestion> Questions { get; }
     private readonly IEnumerator<IQuestion> questionEnumerator;

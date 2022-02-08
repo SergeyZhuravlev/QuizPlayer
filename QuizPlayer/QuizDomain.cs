@@ -21,6 +21,7 @@ namespace QuizPlayer
     public int BaseQuestionNumber { get; set; }
   }
 
+  // todo: добавить минимальный процент для успешного прохождения
   public class Quiz
   {
     public string QuizCaption { get; set; }
