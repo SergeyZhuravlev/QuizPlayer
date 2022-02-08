@@ -5,12 +5,7 @@ using System.Linq;
 
 namespace QuizPlayer
 {
-  public interface IAnswerChanged
-  {
-    void AnswerChanged();
-  }
-
-  class QuizViewModel : BindableBase, IAnswerChanged
+  class QuizViewModel : BindableBase
   {
     private QuizModel QuizModel { get; }
 
@@ -51,23 +46,17 @@ namespace QuizPlayer
       {
         AnswerQuestion();
       }
-    },
+    }/*,
     () =>
     {
       return CurrentQuestion.UserAnyAnswered && !QuizModel.CompletedQuiz;
-    });
+    }*/);
 
-    public void AnswerChanged()
-    {
-      RaisePropertyChanged(nameof(ButtonCommand));
-    }
-
-    private void AnswerQuestion()
+        private void AnswerQuestion()
     {
       ShowCurrentQuestionResult = true;
       CurrentQuestion.UserAnswered();
       RaisePropertyChanged(nameof(CurrentQuestion));
-      CurrentQuestion.RaisePropertyChangedUserAnyAnswered();
       RaisePropertyChanged(nameof(ButtonCaption));
     }
 
@@ -77,7 +66,6 @@ namespace QuizPlayer
       QuizModel.NextQuestion();
       RaisePropertyChanged(nameof(ButtonCaption));
       RaisePropertyChanged(nameof(CurrentQuestion));
-      CurrentQuestion.RaisePropertyChangedUserAnyAnswered();
       RaisePropertyChanged(nameof(QuestionNumber));
       RaisePropertyChanged(nameof(CompletedQuiz));
     }

@@ -1,5 +1,6 @@
 ﻿using Prism.Mvvm;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace QuizPlayer
@@ -30,7 +31,16 @@ namespace QuizPlayer
 
     public bool RightAnswer { get; private set; }
 
-    public bool UserAnswer { get; set; }
+    private bool userAnswer;
+    public bool UserAnswer
+    {
+      get => userAnswer;
+      set
+      {
+        userAnswer = value;
+        RaisePropertyChanged(nameof(UserAnswer));
+      }
+    }
 
     private bool userAnswered;
     public bool UserAnswered
@@ -72,6 +82,8 @@ namespace QuizPlayer
       Text = question.Text;
       Answers = question.Answers.Select(a => new AnswerViewModel(a)).ToList();
       BaseQuestionNumber = question.BaseQuestionNumber;
+      foreach (var answer in Answers)
+        answer.PropertyChanged += OnUserAnyAnsweredChanged;
     }
 
     public string Text { get; private set; }
@@ -83,12 +95,13 @@ namespace QuizPlayer
 
     public bool UserRightAnswered => Answers.All(a => a.UserRightAnswered);
 
-    public bool UserAnyAnswered => Answers.Any(a => a.UserAnswer);
-
-    public void RaisePropertyChangedUserAnyAnswered()
+    private void OnUserAnyAnsweredChanged(object sender, PropertyChangedEventArgs e)
     {
-      RaisePropertyChanged(nameof(UserAnyAnswered));
+      if (e.PropertyName == nameof(AnswerViewModel.UserAnswer))
+        RaisePropertyChanged(nameof(UserAnyAnswered));
     }
+
+    public bool UserAnyAnswered => Answers.Any(a => a.UserAnswer);
 
     public void UserAnswered()
     {

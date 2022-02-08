@@ -7,11 +7,6 @@ namespace QuizPlayer
   /// </summary>
   public partial class MainWindow : Window
   {
-    public void AnswerChanged(object sender, RoutedEventArgs e)
-    {
-      if (DataContext is IAnswerChanged eventProvider)
-        eventProvider.AnswerChanged();
-    }
     public MainWindow()
     {
       InitializeComponent();
