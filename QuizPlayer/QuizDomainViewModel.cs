@@ -11,7 +11,14 @@ namespace QuizPlayer
     public bool RightAnswer { get; }
   }
 
-  public class AnswerViewModel: BindableBase, IAnswer
+  public enum AnswerState
+  {
+    NotAnswered,
+    WrongAnswered,
+    RightAnswered
+  }
+
+  public class AnswerViewModel : BindableBase, IAnswer
   {
     public AnswerViewModel(Answer answer)
     {
@@ -23,17 +30,7 @@ namespace QuizPlayer
 
     public bool RightAnswer { get; private set; }
 
-    private bool userAnswer;
-    public bool UserAnswer
-    {
-      get => userAnswer;
-      set
-      {
-        userAnswer = value;
-        RaisePropertyChanged(nameof(UserAnswer));
-        RaisePropertyChanged(nameof(UserRightAnswered));
-      }
-    }
+    public bool UserAnswer { get; set; }
 
     private bool userAnswered;
     public bool UserAnswered
@@ -43,8 +40,16 @@ namespace QuizPlayer
       {
         userAnswered = value;
         RaisePropertyChanged(nameof(UserAnswered));
+        RaisePropertyChanged(nameof(AnswerState));
       }
     }
+
+    public AnswerState AnswerState =>
+      (!UserAnswered)
+      ? AnswerState.NotAnswered
+      : (UserRightAnswered
+        ? (UserAnswer ? AnswerState.RightAnswered : AnswerState.NotAnswered)
+        : AnswerState.WrongAnswered);
 
     public bool UserRightAnswered => UserAnswer == RightAnswer;
   }

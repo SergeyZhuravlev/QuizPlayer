@@ -22,15 +22,21 @@ namespace QuizPlayer
   }
 
   [ValueConversion(typeof(Answer), typeof(SolidColorBrush))]
-  class AnswerToColorBrushConverter : IValueConverter
+  class AnswerStateToColorBrushConverter : IValueConverter
   {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-      if (value is AnswerViewModel answer)
+      if (value is AnswerState state)
       {
-        if (!answer.UserAnswered)
-          return new SolidColorBrush(Colors.Transparent);
-        return answer.UserRightAnswered ? new SolidColorBrush(Colors.Green) : new SolidColorBrush(Colors.Red);
+        switch (state)
+        {
+          case AnswerState.NotAnswered:
+            return new SolidColorBrush(Colors.Transparent);
+          case AnswerState.RightAnswered:
+            return new SolidColorBrush(Colors.Green);
+          case AnswerState.WrongAnswered:
+            return new SolidColorBrush(Colors.Red);
+        }
       }
 
       return Binding.DoNothing;
