@@ -6,7 +6,7 @@ namespace QuizPlayer
   class QuizModel
   {
     private List<Question> Questions { get; }
-    private IEnumerator<Question> questionEnumerator;
+    private readonly IEnumerator<Question> questionEnumerator;
 
     public QuizModel(List<Question> questions)
     {
@@ -15,7 +15,7 @@ namespace QuizPlayer
       NextQuestion();
     }
 
-    public Question CurrentQuestion { get; set; }
+    public Question CurrentQuestion { get; private set; }
 
     public void NextQuestion()
     {
