@@ -46,13 +46,9 @@ namespace QuizPlayer
       {
         AnswerQuestion();
       }
-    }/*,
-    () =>
-    {
-      return CurrentQuestion.UserAnyAnswered && !QuizModel.CompletedQuiz;
-    }*/);
+    });
 
-        private void AnswerQuestion()
+    private void AnswerQuestion()
     {
       ShowCurrentQuestionResult = true;
       CurrentQuestion.UserAnswered();
