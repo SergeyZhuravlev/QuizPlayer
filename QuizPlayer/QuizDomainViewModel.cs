@@ -85,7 +85,7 @@ namespace QuizPlayer
 
     public bool UserAnyAnswered => Answers.Any(a => a.UserAnswer);
 
-    public void UserAnyAnsweredChanged()
+    public void RaisePropertyChangedUserAnyAnswered()
     {
       RaisePropertyChanged(nameof(UserAnyAnswered));
     }

@@ -67,7 +67,7 @@ namespace QuizPlayer
       ShowCurrentQuestionResult = true;
       CurrentQuestion.UserAnswered();
       RaisePropertyChanged(nameof(CurrentQuestion));
-      CurrentQuestion.UserAnyAnsweredChanged();
+      CurrentQuestion.RaisePropertyChangedUserAnyAnswered();
       RaisePropertyChanged(nameof(ButtonCaption));
     }
 
@@ -77,7 +77,7 @@ namespace QuizPlayer
       QuizModel.NextQuestion();
       RaisePropertyChanged(nameof(ButtonCaption));
       RaisePropertyChanged(nameof(CurrentQuestion));
-      CurrentQuestion.UserAnyAnsweredChanged();
+      CurrentQuestion.RaisePropertyChangedUserAnyAnswered();
       RaisePropertyChanged(nameof(QuestionNumber));
       RaisePropertyChanged(nameof(CompletedQuiz));
     }
