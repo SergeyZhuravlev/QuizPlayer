@@ -1,7 +1,6 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using System.Collections.Generic;
-using System.Windows;
 
 namespace QuizPlayer
 {
@@ -60,6 +59,8 @@ namespace QuizPlayer
     {
       ShowCurrentQuestionResult = true;
       CurrentQuestion.UserAnswered();
+      RaisePropertyChanged(nameof(CurrentQuestion));
+      // RaisePropertyChanged(nameof(CurrentQuestion.UserAnswered));
       RaisePropertyChanged(nameof(ButtonCaption));
     }
 
@@ -69,6 +70,7 @@ namespace QuizPlayer
       QuizModel.NextQuestion();
       RaisePropertyChanged(nameof(ButtonCaption));
       RaisePropertyChanged(nameof(CurrentQuestion));
+      // RaisePropertyChanged(nameof(CurrentQuestion.UserAnswered));
       RaisePropertyChanged(nameof(QuestionNumber));
       RaisePropertyChanged(nameof(CompletedQuiz));
     }
