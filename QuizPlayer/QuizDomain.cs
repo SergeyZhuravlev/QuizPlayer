@@ -9,15 +9,6 @@ namespace QuizPlayer
     public string Text { get; set; }
 
     public bool RightAnswer { get; set; }
-
-    [JsonIgnore]
-    public bool UserAnswer { get; set; }
-
-    [JsonIgnore]
-    public bool UserAnswered { get; set; }
-
-    [JsonIgnore]
-    public bool UserRightAnswered => UserAnswer == RightAnswer;
   }
 
   public class Question
@@ -27,16 +18,7 @@ namespace QuizPlayer
     public List<Answer> Answers { get; set; }
 
     [JsonIgnore]
-    public bool UserRightAnswered => Answers.All(a => a.UserRightAnswered);
-
-    [JsonIgnore]
-    public bool UserAnyAnswered => Answers.Any(a => a.UserAnswer);
-
-    public void UserAnswered()
-    {
-      foreach (var answer in Answers)
-        answer.UserAnswered = true;
-    }
+    public int BaseQuestionNumber { get; set; }
   }
 
   public class Quiz
@@ -45,6 +27,6 @@ namespace QuizPlayer
     public List<Question> Questions { get; set; }
 
     [JsonIgnore]
-    public List<Question> RandomizedQuestions => Questions.Select(q => new Question { Text = q.Text, Answers = q.Answers.Shuffle() }).Shuffle();
+    public List<Question> RandomizedQuestions => Questions.Select((question, index) => new Question { BaseQuestionNumber = index, Text = question.Text, Answers = question.Answers.Shuffle() }).Shuffle();
   }
 }

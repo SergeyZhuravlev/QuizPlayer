@@ -1,6 +1,7 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace QuizPlayer
 {
@@ -24,7 +25,7 @@ namespace QuizPlayer
     public string Caption { get; }
 
     #region Use on question stage
-    public Question CurrentQuestion => QuizModel.CurrentQuestion;
+    public QuestionViewModel CurrentQuestion => (QuestionViewModel)QuizModel.CurrentQuestion;
     public string QuestionNumber => QuizModel.QuestionNumber + ".";
     public string ButtonCaption => ShowCurrentQuestionResult ? "Next Question" : "Answer";
     #endregion
@@ -35,19 +36,25 @@ namespace QuizPlayer
     public int QuestionCount => QuizModel.QuestionCount;
     public int RightAnsweredQuestionCount => QuizModel.RightAnsweredQuestionCount;
     public int RightAnsweredPercent => QuizModel.RightAnsweredPercent;
-    public IEnumerable<string> WrongQuestionList => QuizModel.WrongQuestionList;
+    public IEnumerable<QuestionViewModel> WrongQuestionList => QuizModel.WrongQuestionList.Cast<QuestionViewModel>();
     #endregion
 
     public DelegateCommand ButtonCommand => new(() =>
     {
       if (ShowCurrentQuestionResult)
+      {
         NextQuestion();
+        if (QuizModel.CompletedQuiz)
+          RaisePropertyChanged(nameof(CompletedQuiz));
+      }
       else
+      {
         AnswerQuestion();
+      }
     },
     () =>
     {
-      return CurrentQuestion.UserAnyAnswered;
+      return CurrentQuestion.UserAnyAnswered && !QuizModel.CompletedQuiz;
     });
 
     public void AnswerChanged()
@@ -60,7 +67,7 @@ namespace QuizPlayer
       ShowCurrentQuestionResult = true;
       CurrentQuestion.UserAnswered();
       RaisePropertyChanged(nameof(CurrentQuestion));
-      // RaisePropertyChanged(nameof(CurrentQuestion.UserAnswered));
+      CurrentQuestion.UserAnyAnsweredChanged();
       RaisePropertyChanged(nameof(ButtonCaption));
     }
 
@@ -70,7 +77,7 @@ namespace QuizPlayer
       QuizModel.NextQuestion();
       RaisePropertyChanged(nameof(ButtonCaption));
       RaisePropertyChanged(nameof(CurrentQuestion));
-      // RaisePropertyChanged(nameof(CurrentQuestion.UserAnswered));
+      CurrentQuestion.UserAnyAnsweredChanged();
       RaisePropertyChanged(nameof(QuestionNumber));
       RaisePropertyChanged(nameof(CompletedQuiz));
     }

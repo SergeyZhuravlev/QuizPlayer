@@ -26,7 +26,7 @@ namespace QuizPlayer
   {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-      if (value is Answer answer)
+      if (value is AnswerViewModel answer)
       {
         if (!answer.UserAnswered)
           return new SolidColorBrush(Colors.Transparent);

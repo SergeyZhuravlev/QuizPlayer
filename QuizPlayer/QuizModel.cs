@@ -5,17 +5,17 @@ namespace QuizPlayer
 {
   class QuizModel
   {
-    private List<Question> Questions { get; }
-    private readonly IEnumerator<Question> questionEnumerator;
+    private IReadOnlyCollection<IQuestion> Questions { get; }
+    private readonly IEnumerator<IQuestion> questionEnumerator;
 
-    public QuizModel(List<Question> questions)
+    public QuizModel(IReadOnlyCollection<IQuestion> questions)
     {
       Questions = questions;
       questionEnumerator = Questions.AsEnumerable().GetEnumerator();
       NextQuestion();
     }
 
-    public Question CurrentQuestion { get; private set; }
+    public IQuestion CurrentQuestion { get; private set; }
 
     public void NextQuestion()
     {
@@ -26,7 +26,6 @@ namespace QuizPlayer
       }
       else
       {
-        CurrentQuestion = new() { Text = string.Empty, Answers = new() { } };
         CompletedQuiz = true;
       }
     }
@@ -36,6 +35,6 @@ namespace QuizPlayer
     public int QuestionCount => Questions.Count;
     public int RightAnsweredQuestionCount => Questions.Count(q => q.UserRightAnswered);
     public int RightAnsweredPercent => (int)(100.0 * RightAnsweredQuestionCount / QuestionCount);
-    public IEnumerable<string> WrongQuestionList => Questions.Where(q => !q.UserRightAnswered).Select(q => q.Text);
+    public IEnumerable<IQuestion> WrongQuestionList => Questions.Where(q => !q.UserRightAnswered);
   }
 }

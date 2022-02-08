@@ -65,8 +65,9 @@ namespace QuizPlayer
         ShowMessageAndExit(MessageType.Error, $"Quiz opening error: '{e.Message}'");
         return;
       }
-      var quizModel = new QuizModel(quiz.RandomizedQuestions);
-      var quizViewModel= new QuizViewModel(quiz.QuizCaption, quizModel);
+      var viewModelData = new QuizDomainViewModel(quiz);
+      var quizModel = new QuizModel(viewModelData.Questions);
+      var quizViewModel = new QuizViewModel(viewModelData.QuizCaption, quizModel);
       var window = new MainWindow();
       window.DataContext = quizViewModel;
       window.Show();
