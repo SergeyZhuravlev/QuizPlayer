@@ -48,7 +48,8 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="100*"/>
                         </Grid.ColumnDefinitions>
-                        <CheckBox Grid.Column="0" FontWeight="SemiBold" IsChecked="{Binding UserAnswer, Mode=OneWayToSource}" IsEnabled="{Binding UserAnswered, Converter={StaticResource InverseBooleanConverter}, Mode=OneWay}" />
+                        <CheckBox Grid.Column="0" FontWeight="SemiBold" IsChecked="{Binding UserAnswer, Mode=TwoWay}" IsEnabled="{Binding UserAnswered, Converter={StaticResource InverseBooleanConverter}, Mode=OneWay}" Visibility="{Binding OnlyOneAnswer, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=FalseToVisible, Mode=OneWay}" />
+                        <RadioButton Grid.Column="0" FontWeight="SemiBold" IsChecked="{Binding UserAnswer, Mode=TwoWay}" IsEnabled="{Binding UserAnswered, Converter={StaticResource InverseBooleanConverter}, Mode=OneWay}" Visibility="{Binding OnlyOneAnswer, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=TrueToVisible, Mode=OneWay}" />
                         <TextBlock Grid.Column="2" Margin="5,1,1,1" FontSize="16" Text="{Binding Text}" FontWeight="SemiBold" TextWrapping="WrapWithOverflow" VerticalAlignment="Stretch" Background="{Binding AnswerState, Converter={StaticResource AnswerStateToColorBrushConverter}, Mode=OneWay}" />
                     </Grid>
                 </DataTemplate>

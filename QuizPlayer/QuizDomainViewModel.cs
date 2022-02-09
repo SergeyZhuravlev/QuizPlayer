@@ -27,17 +27,17 @@ namespace QuizPlayer
     {
       Text = answer.Text;
       RightAnswer = answer.RightAnswer;
-      this.onlyOneAnswer = onlyOneAnswer;
+      OnlyOneAnswer = onlyOneAnswer;
     }
 
-    public string Text { get; private set; }
+    public string Text { get; }
 
-    public bool RightAnswer { get; private set; }
+    public bool RightAnswer { get; }
 
     #region For reset other answers in radiobuttoned question with only one answer
     public bool UserAnswerLocked { get; private set; }
     public event Action OnUserAnswerSet;
-    private readonly bool onlyOneAnswer;
+    public bool OnlyOneAnswer { get; }
     #endregion
 
     private bool userAnswer;
@@ -50,20 +50,19 @@ namespace QuizPlayer
           return;
         userAnswer = value;
         RaisePropertyChanged(nameof(UserAnswer));
-        if (onlyOneAnswer && userAnswer)
-          Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+        if (OnlyOneAnswer && userAnswer)
+        {
+          try
           {
-            try
-            {
-              UserAnswerLocked = true;
-              var handler = OnUserAnswerSet;
-              handler?.Invoke();
-            }
-            finally
-            {
-              UserAnswerLocked = false;
-            }
-          }));
+            UserAnswerLocked = true;
+            var handler = OnUserAnswerSet;
+            handler?.Invoke();
+          }
+          finally
+          {
+            UserAnswerLocked = false;
+          }
+        }
       }
     }
 
@@ -117,14 +116,14 @@ namespace QuizPlayer
       }
     }
 
-    public string Text { get; private set; }
+    public string Text { get; }
 
     public IReadOnlyCollection<IAnswer> AnswersVariance => Answers;
-    public IReadOnlyCollection<AnswerViewModel> Answers { get; private set; }
+    public IReadOnlyCollection<AnswerViewModel> Answers { get; }
 
-    public bool OnlyOneRightAnswerPerQuestion { get; private set; }
+    public bool OnlyOneRightAnswerPerQuestion { get; }
 
-    public int BaseQuestionNumber { get; private set; }
+    public int BaseQuestionNumber { get; }
 
     public bool UserRightAnswered => Answers.All(a => a.UserRightAnswered);
 
@@ -159,11 +158,11 @@ namespace QuizPlayer
       MinimalAnsweredQuestionsPercentForQuizSuccess = quiz.MinimalAnsweredQuestionsPercentForQuizSuccess.Value;
     }
 
-    public string QuizCaption { get; private set; }
+    public string QuizCaption { get; }
 
     // 0..100
     public int MinimalAnsweredQuestionsPercentForQuizSuccess { get; }
 
-    public List<QuestionViewModel> Questions { get; private set; }
+    public List<QuestionViewModel> Questions { get; }
   }
 }
