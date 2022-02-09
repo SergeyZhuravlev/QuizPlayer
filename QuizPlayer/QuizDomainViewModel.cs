@@ -48,6 +48,7 @@ namespace QuizPlayer
         if (userAnswer == value)
           return;
         userAnswer = value;
+        RaisePropertyChanged(nameof(UserAnswer));
         if (onlyOneAnswer && userAnswer)
           try
           {
@@ -59,7 +60,6 @@ namespace QuizPlayer
           {
             UserAnswerLocked = false;
           }
-        RaisePropertyChanged(nameof(UserAnswer));
       }
     }
 
