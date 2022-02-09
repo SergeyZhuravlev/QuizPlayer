@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows;
 
 namespace QuizPlayer
 {
@@ -50,16 +51,19 @@ namespace QuizPlayer
         userAnswer = value;
         RaisePropertyChanged(nameof(UserAnswer));
         if (onlyOneAnswer && userAnswer)
-          try
+          Application.Current.Dispatcher.BeginInvoke(new Action(() =>
           {
-            UserAnswerLocked = true;
-            var handler = OnUserAnswerSet;
-            handler?.Invoke();
-          }
-          finally
-          {
-            UserAnswerLocked = false;
-          }
+            try
+            {
+              UserAnswerLocked = true;
+              var handler = OnUserAnswerSet;
+              handler?.Invoke();
+            }
+            finally
+            {
+              UserAnswerLocked = false;
+            }
+          }));
       }
     }
 
