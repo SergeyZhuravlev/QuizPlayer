@@ -9,12 +9,14 @@ namespace QuizPlayer
   public class QuizFlowViewModel : BindableBase
   {
     private QuizModel QuizModel { get; }
+    private QuizViewModel QuizViewModel { get; }
 
     private bool ShowCurrentQuestionResult { get; set; }
 
-    public QuizFlowViewModel(QuizModel quizModel)
+    public QuizFlowViewModel(QuizModel quizModel, QuizViewModel quizViewModel)
     {
       QuizModel = quizModel;
+      QuizViewModel = quizViewModel;
     }
 
     private QuizFlowView view;
@@ -29,8 +31,8 @@ namespace QuizPlayer
       if (ShowCurrentQuestionResult)
       {
         NextQuestion();
-        /*if (QuizModel.CompletedQuiz)
-          RaisePropertyChanged(nameof(CompletedQuiz));*/
+        if (QuizModel.CompletedQuiz)
+          QuizViewModel.CurrentViewModel = new QuizResultsViewModel(QuizModel);
       }
       else
       {
@@ -65,8 +67,8 @@ namespace QuizPlayer
       QuizModel = quizModel;
     }
 
-    /*private QuizResultsView view;
-    public QuizResultsView View => view is null ? view = new() : view;*/
+    private QuizResultsView view;
+    public QuizResultsView View => view is null ? view = new() : view;
 
     public int QuestionCount => QuizModel.QuestionCount;
     public int RightAnsweredQuestionCount => QuizModel.RightAnsweredQuestionCount;
@@ -79,7 +81,7 @@ namespace QuizPlayer
     public QuizViewModel(string quizCaption, QuizModel quizModel)
     {
       Caption = $"QuizPlayer: {quizCaption}";
-      CurrentViewModel = new QuizFlowViewModel(quizModel);
+      CurrentViewModel = new QuizFlowViewModel(quizModel, this);
     }
 
     public string Caption { get; }
@@ -89,7 +91,7 @@ namespace QuizPlayer
     {
       get => currentViewModel;
       set
-      { 
+      {
         currentViewModel = value;
         RaisePropertyChanged(nameof(CurrentViewModel));
       }

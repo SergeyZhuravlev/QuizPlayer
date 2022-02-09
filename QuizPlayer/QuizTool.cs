@@ -62,7 +62,7 @@ namespace QuizPlayer
         _ = GetQuiz(source);
       } catch
       {
-        throw new Exception($"File '{QuizFileSourceForDecompile}' not contain compiled .bin quiz file. It file broken or wrongly renamed from *.json file. You should rename only *.bin file to *.decompile file");
+        throw new($"File '{QuizFileSourceForDecompile}' not contain compiled .bin quiz file. It file broken or wrongly renamed from *.json file. You should rename only *.bin file to *.decompile file");
       }
       File.WriteAllBytes(QuizFileSource, source);
       File.Delete(QuizFileSourceForDecompile);

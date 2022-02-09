@@ -11,14 +11,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <DataTemplate DataType="{x:Type local:QuizFlowViewModel}">
-                <local:QuizFlowView />
-            </DataTemplate>
-            <!--
-            <DataTemplate DataType="{x:Type local:QuizResultsViewModel}">
-                <local:QuizResultsView />
-            </DataTemplate>
-            -->
         </ResourceDictionary>
     </Window.Resources>
     <Grid>

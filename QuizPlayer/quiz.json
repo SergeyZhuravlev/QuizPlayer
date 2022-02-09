@@ -1,7 +1,7 @@
 {
   "QuizCaption": "QuizCaption",
   "QuestionsPerQuiz": 2,
-  "OnlyOneRightAnswerPerQuestionByDefault": true,
+  "OnlyOneRightAnswerPerQuestionByDefault": false,
   "MinimalAnsweredQuestionsPercentForQuizSuccess": 100,
   "Questions": [
     {

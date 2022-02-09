@@ -154,7 +154,7 @@ namespace QuizPlayer
     public QuizDomainViewModel(Quiz quiz)
     {
       QuizCaption = quiz.QuizCaption;
-      Questions = quiz.RandomizedQuestions.Select(q => new QuestionViewModel(q)).ToList();
+      Questions = quiz.RandomizedQuestions.Take(quiz.QuestionsPerQuiz.Value).Select(q => new QuestionViewModel(q)).ToList();
       MinimalAnsweredQuestionsPercentForQuizSuccess = quiz.MinimalAnsweredQuestionsPercentForQuizSuccess.Value;
     }
 
