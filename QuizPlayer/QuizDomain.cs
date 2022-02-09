@@ -15,19 +15,34 @@ namespace QuizPlayer
   {
     public string Text { get; set; }
 
+    public bool? OnlyOneRightAnswerPerQuestion { get; set; }
+
     public List<Answer> Answers { get; set; }
 
     [JsonIgnore]
     public int BaseQuestionNumber { get; set; }
   }
 
-  // todo: добавить минимальный процент для успешного прохождения
   public class Quiz
   {
     public string QuizCaption { get; set; }
+
+    public bool? OnlyOneRightAnswerPerQuestionByDefault { get; set; }
+
+    public int? QuestionsPerQuiz { get; set; }
+
+    // 0..100
+    public int? MinimalAnsweredQuestionsPercentForQuizSuccess { get; set; }
+
     public List<Question> Questions { get; set; }
 
     [JsonIgnore]
-    public List<Question> RandomizedQuestions => Questions.Select((question, index) => new Question { BaseQuestionNumber = index, Text = question.Text, Answers = question.Answers.Shuffle() }).Shuffle();
+    public List<Question> RandomizedQuestions => Questions.Select(question => new Question
+    {
+      Text = question.Text,
+      BaseQuestionNumber = question.BaseQuestionNumber,
+      OnlyOneRightAnswerPerQuestion = question.OnlyOneRightAnswerPerQuestion,
+      Answers = question.Answers.Shuffle()
+    }).Shuffle();
   }
 }

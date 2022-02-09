@@ -1,5 +1,8 @@
 {
   "QuizCaption": "QuizCaption",
+  "QuestionsPerQuiz": 2,
+  "OnlyOneRightAnswerPerQuestionByDefault": true,
+  "MinimalAnsweredQuestionsPercentForQuizSuccess": 100,
   "Questions": [
     {
       "Text": "QuizQuestion1",
@@ -15,6 +18,7 @@
     },
     {
       "Text": "QuizQuestion2",
+      "OnlyOneRightAnswerPerQuestion": false,
       "Answers": [
         {
           "Text": "QuizAnswer1"
@@ -22,6 +26,24 @@
         {
           "Text": "QuizAnswer2",
           "RightAnswer": true
+        },
+        {
+          "Text": "QuizAnswer3",
+          "RightAnswer": true
+        },
+        {
+          "Text": "QuizAnswer4"
+        }
+      ]
+    },
+    {
+      "Text": "QuizQuestion3",
+      "Answers": [
+        {
+          "Text": "QuizAnswer1"
+        },
+        {
+          "Text": "QuizAnswer2"
         },
         {
           "Text": "QuizAnswer3",

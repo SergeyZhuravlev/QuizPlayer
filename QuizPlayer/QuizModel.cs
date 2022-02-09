@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace QuizPlayer
@@ -34,7 +35,7 @@ namespace QuizPlayer
     public int QuestionNumber { get; private set; }
     public int QuestionCount => Questions.Count;
     public int RightAnsweredQuestionCount => Questions.Count(q => q.UserRightAnswered);
-    public int RightAnsweredPercent => (int)(100.0 * RightAnsweredQuestionCount / QuestionCount);
+    public int RightAnsweredPercent => Convert.ToInt32(100.0 * RightAnsweredQuestionCount / QuestionCount);
     public IEnumerable<IQuestion> WrongQuestionList => Questions.Where(q => !q.UserRightAnswered);
   }
 }

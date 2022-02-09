@@ -1,4 +1,5 @@
 ﻿using Prism.Mvvm;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -21,15 +22,22 @@ namespace QuizPlayer
 
   public class AnswerViewModel : BindableBase, IAnswer
   {
-    public AnswerViewModel(Answer answer)
+    public AnswerViewModel(Answer answer, bool onlyOneAnswer)
     {
       Text = answer.Text;
       RightAnswer = answer.RightAnswer;
+      this.onlyOneAnswer = onlyOneAnswer;
     }
 
     public string Text { get; private set; }
 
     public bool RightAnswer { get; private set; }
+
+    #region For reset other answers in radiobuttoned question with only one answer
+    public bool UserAnswerLocked { get; private set; }
+    public event Action OnUserAnswerSet;
+    private readonly bool onlyOneAnswer;
+    #endregion
 
     private bool userAnswer;
     public bool UserAnswer
@@ -37,7 +45,20 @@ namespace QuizPlayer
       get => userAnswer;
       set
       {
+        if (userAnswer == value)
+          return;
         userAnswer = value;
+        if (onlyOneAnswer && userAnswer)
+          try
+          {
+            UserAnswerLocked = true;
+            var handler = OnUserAnswerSet;
+            handler?.Invoke();
+          }
+          finally
+          {
+            UserAnswerLocked = false;
+          }
         RaisePropertyChanged(nameof(UserAnswer));
       }
     }
@@ -64,6 +85,7 @@ namespace QuizPlayer
     public bool UserRightAnswered => UserAnswer == RightAnswer;
   }
 
+
   public interface IQuestion
   {
     public string Text { get; }
@@ -80,10 +102,15 @@ namespace QuizPlayer
     public QuestionViewModel(Question question)
     {
       Text = question.Text;
-      Answers = question.Answers.Select(a => new AnswerViewModel(a)).ToList();
       BaseQuestionNumber = question.BaseQuestionNumber;
+      OnlyOneRightAnswerPerQuestion = question.OnlyOneRightAnswerPerQuestion.Value;
+      Answers = question.Answers.Select(a => new AnswerViewModel(a, OnlyOneRightAnswerPerQuestion)).ToList();
       foreach (var answer in Answers)
-        answer.PropertyChanged += OnUserAnyAnsweredChanged;
+      {
+        answer.PropertyChanged += OnAnswerChanged;
+        if (OnlyOneRightAnswerPerQuestion)
+          answer.OnUserAnswerSet += OnUserAnswerSet;
+      }
     }
 
     public string Text { get; private set; }
@@ -91,15 +118,23 @@ namespace QuizPlayer
     public IReadOnlyCollection<IAnswer> AnswersVariance => Answers;
     public IReadOnlyCollection<AnswerViewModel> Answers { get; private set; }
 
+    public bool OnlyOneRightAnswerPerQuestion { get; private set; }
+
     public int BaseQuestionNumber { get; private set; }
 
     public bool UserRightAnswered => Answers.All(a => a.UserRightAnswered);
 
-    private void OnUserAnyAnsweredChanged(object sender, PropertyChangedEventArgs e)
+    private void OnAnswerChanged(object sender, PropertyChangedEventArgs e)
     {
       if (e.PropertyName == nameof(AnswerViewModel.UserAnswer))
         RaisePropertyChanged(nameof(UserAnyAnswered));
     }
+    private void OnUserAnswerSet()
+    {
+      foreach (var answer in Answers.Where(a => !a.UserAnswerLocked))
+        answer.UserAnswer = false;
+    }
+    
 
     public bool UserAnyAnswered => Answers.Any(a => a.UserAnswer);
 
@@ -110,15 +145,20 @@ namespace QuizPlayer
     }
   }
 
+
   public class QuizDomainViewModel
   {
     public QuizDomainViewModel(Quiz quiz)
     {
       QuizCaption = quiz.QuizCaption;
       Questions = quiz.RandomizedQuestions.Select(q => new QuestionViewModel(q)).ToList();
+      MinimalAnsweredQuestionsPercentForQuizSuccess = quiz.MinimalAnsweredQuestionsPercentForQuizSuccess.Value;
     }
 
     public string QuizCaption { get; private set; }
+
+    // 0..100
+    public int MinimalAnsweredQuestionsPercentForQuizSuccess { get; }
 
     public List<QuestionViewModel> Questions { get; private set; }
   }

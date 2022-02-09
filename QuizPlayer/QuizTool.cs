@@ -89,50 +89,64 @@ namespace QuizPlayer
       Utf8JsonReader jsonUtfReader = new(utf8Quiz, new() { AllowTrailingCommas = true, CommentHandling = JsonCommentHandling.Skip });
       JsonSerializerOptions options = new() { PropertyNameCaseInsensitive = true, AllowTrailingCommas = true, ReadCommentHandling = JsonCommentHandling.Skip, WriteIndented = true };
       var quiz = JsonSerializer.Deserialize<Quiz>(ref jsonUtfReader, options);
+      FillQuiz(quiz);
       CheckQuiz(quiz);
       return quiz;
+    }
+
+    private static void FillQuiz(Quiz quiz)
+    {
+      foreach (var (question, index) in quiz.Questions.Select((question, index) => (question, index)))
+      {
+        question.BaseQuestionNumber = index;
+        if (!question.OnlyOneRightAnswerPerQuestion.HasValue)
+          question.OnlyOneRightAnswerPerQuestion = quiz.OnlyOneRightAnswerPerQuestionByDefault;
+        if (!question.OnlyOneRightAnswerPerQuestion.HasValue)
+          question.OnlyOneRightAnswerPerQuestion = false;
+      }
+      if (!quiz.QuestionsPerQuiz.HasValue)
+        quiz.QuestionsPerQuiz = quiz.Questions is null ? 0 : quiz.Questions.Count;
+      if (!quiz.MinimalAnsweredQuestionsPercentForQuizSuccess.HasValue)
+        quiz.MinimalAnsweredQuestionsPercentForQuizSuccess = 0;
     }
 
     private static void CheckQuiz(Quiz quiz)
     {
       if (string.IsNullOrWhiteSpace(quiz.QuizCaption))
-        throw new Exception("Empty 'QuizCaption' field");
+        throw new("Empty 'QuizCaption' field in root");
       if (quiz.Questions is null || quiz.Questions.Count == 0)
-        throw new Exception("Empty 'Questions' list");
-      { 
-        if (quiz.Questions
-          .Select((question, index) => new { question, index })
-          .FirstOrDefault(q => string.IsNullOrWhiteSpace(q.question.Text))
-          is var failed && !(failed is null))
-            throw new Exception($"Empty question 'Text' field in {failed.index} question");
+        throw new("Empty 'Questions' list in root");
+      if (quiz.QuestionsPerQuiz < 0 || quiz.QuestionsPerQuiz > quiz.Questions.Count)
+        throw new("Field 'QuestionsPerQuiz' in root is wrong");
+      if (quiz.MinimalAnsweredQuestionsPercentForQuizSuccess < 0 || quiz.MinimalAnsweredQuestionsPercentForQuizSuccess > 100)
+        throw new("Field 'MinimalAnsweredQuestionsPercentForQuizSuccess' in root is wrong. Should be in 0-100 range.");
+      {
+        if (quiz.Questions.FirstOrDefault(q => string.IsNullOrWhiteSpace(q.Text)) is Question failed)
+            throw new($"Empty question 'Text' field in {failed.BaseQuestionNumber} question");
+      }
+      {
+        if (quiz.Questions.FirstOrDefault(q => q.Answers is null || q.Answers.Count < 2) is Question failed)
+          throw new($"Empty or small amount in 'Answers' list in {failed.BaseQuestionNumber} question: '{failed.Text}'");
+      }
+      {
+        if (quiz.Questions.FirstOrDefault(q => q.Answers.Any(a => string.IsNullOrWhiteSpace(a.Text)))
+          is Question failed)
+            throw new($"Empty answer 'Text' field in some of answer in {failed.BaseQuestionNumber} question: '{failed.Text}'");
+      }
+      {
+        if (quiz.Questions.FirstOrDefault(q => q.Answers.All(a => a.RightAnswer)) is Question failed)
+            throw new($"See 'RightAnswer' field. All answers is right in {failed.BaseQuestionNumber} question: '{failed.Text}'");
+      }
+      {
+        if (quiz.Questions.FirstOrDefault(q => q.Answers.All(a => !a.RightAnswer)) is Question failed)
+            throw new($"See 'RightAnswer' field. All answers is not right in {failed.BaseQuestionNumber} question: '{failed.Text}'");
       }
       {
         if (quiz.Questions
-          .Select((question, index) => new { question, index })
-          .FirstOrDefault(q => q.question.Answers is null || q.question.Answers.Count < 2)
-          is var failed && !(failed is null))
-          throw new Exception($"Empty or small amount in 'Answers' list in {failed.index} question: '{failed.question.Text}'");
-      }
-      {
-        if (quiz.Questions
-          .Select((question, index) => new { question, index })
-          .FirstOrDefault(q => q.question.Answers.Any(a => string.IsNullOrWhiteSpace(a.Text)))
-          is var failed && !(failed is null))
-            throw new Exception($"Empty answer 'Text' field in some of answer in {failed.index} question: '{failed.question.Text}'");
-      }
-      {
-        if (quiz.Questions
-          .Select((question, index) => new { question, index })
-          .FirstOrDefault(q => q.question.Answers.All(a => a.RightAnswer))
-          is var failed && !(failed is null))
-            throw new Exception($"See 'RightAnswer' field. All answers is right in {failed.index} question: '{failed.question.Text}'");
-      }
-      {
-        if (quiz.Questions
-          .Select((question, index) => new { question, index })
-          .FirstOrDefault(q => q.question.Answers.All(a => !a.RightAnswer)) 
-          is var failed && !(failed is null))
-            throw new Exception($"See 'RightAnswer' field. All answers is not right in {failed.index} question: '{failed.question.Text}'");
+          .Where(q => q.OnlyOneRightAnswerPerQuestion.Value)
+          .FirstOrDefault(q => q.Answers.Count(a => a.RightAnswer) != 1)
+          is Question failed)
+          throw new($"See 'RightAnswer' field. All answers is right in {failed.BaseQuestionNumber} question: '{failed.Text}'");
       }
     }
   }
