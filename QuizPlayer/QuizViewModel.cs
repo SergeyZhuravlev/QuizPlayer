@@ -60,6 +60,8 @@ namespace QuizPlayer
 
     public void OnSelectionChanged(object sender, SelectionChangedEventArgs args)
     {
+      if (ShowCurrentQuestionResult)
+        return;
       var answer = (sender as ListBox).SelectedItem as AnswerViewModel;
       if (answer is null)
         return;
