@@ -3,10 +3,15 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
+    <PublishSingleFile>false</PublishSingleFile>
+    <SelfContained>false</SelfContained>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <RuntimeIdentifier>win-x86</RuntimeIdentifier>
     <LangVersion>latest</LangVersion>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>app_icon.ico</ApplicationIcon>
-  </PropertyGroup>
+    
+</PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Prism.Wpf" Version="8.1.97" />
