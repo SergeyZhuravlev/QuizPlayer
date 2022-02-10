@@ -14,3 +14,5 @@ File quiz.bin could be decompiled to json again by renaming quiz.bin to quiz.dec
 Quiz questions source in quiz.json file:
 ![This is an image](/assets/quizjson.png)
 
+Example of quiz.json file:
+[a relative link](QuizPlayer/quiz.json)
