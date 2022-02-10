@@ -23,7 +23,7 @@ namespace QuizPlayer
     public QuizFlowView View => view is null ? view = new() : view;
 
     public QuestionViewModel CurrentQuestion => (QuestionViewModel)QuizModel.CurrentQuestion;
-    public string QuestionNumber => QuizModel.QuestionNumber + ".";
+    public string QuestionNumberText => CurrentQuestion.QuestionNumber + ".";
     public string ButtonCaption => ShowCurrentQuestionResult ? "Next Question" : "Answer";
 
     public DelegateCommand ButtonCommand => new(() =>
@@ -54,7 +54,7 @@ namespace QuizPlayer
       QuizModel.NextQuestion();
       RaisePropertyChanged(nameof(ButtonCaption));
       RaisePropertyChanged(nameof(CurrentQuestion));
-      RaisePropertyChanged(nameof(QuestionNumber));
+      RaisePropertyChanged(nameof(QuestionNumberText));
     }
   }
 
@@ -81,7 +81,7 @@ namespace QuizPlayer
       QuizModel
       .WrongQuestionList
       .Cast<QuestionViewModel>()
-      .Select(q => $"{q.BaseQuestionNumber}. {q.Text}");
+      .Select(q => $"{q.QuestionNumber}({q.BaseQuestionNumber}). {q.Text}");
   }
 
   public class QuizViewModel : BindableBase

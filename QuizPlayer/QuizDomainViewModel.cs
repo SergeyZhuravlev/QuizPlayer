@@ -106,8 +106,9 @@ namespace QuizPlayer
     {
       Text = question.Text;
       BaseQuestionNumber = question.BaseQuestionNumber;
+      QuestionNumber = question.QuestionNumber;
       OnlyOneRightAnswerPerQuestion = question.OnlyOneRightAnswerPerQuestion.Value;
-      Answers = question.Answers.Select(a => new AnswerViewModel(a, OnlyOneRightAnswerPerQuestion)).ToList();
+      Answers = question.Answers.OrderBy(a => a.MustBeLastAnswer).Select(a => new AnswerViewModel(a, OnlyOneRightAnswerPerQuestion)).ToList();
       foreach (var answer in Answers)
       {
         answer.PropertyChanged += OnAnswerChanged;
@@ -124,6 +125,8 @@ namespace QuizPlayer
     public bool OnlyOneRightAnswerPerQuestion { get; }
 
     public int BaseQuestionNumber { get; }
+
+    public int QuestionNumber { get; }
 
     public bool UserRightAnswered => Answers.All(a => a.UserRightAnswered);
 

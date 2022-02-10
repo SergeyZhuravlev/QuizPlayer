@@ -157,6 +157,10 @@ namespace QuizPlayer
           is Question failed)
           throw new($"See 'RightAnswer' field. All answers is right in {failed.BaseQuestionNumber} question: '{failed.Text}'");
       }
+      {
+        if (quiz.Questions.FirstOrDefault(q => q.Answers.All(a => a.MustBeLastAnswer)) is Question failed)
+          throw new($"See 'MustBeLastAnswer' field. All answers is marked as last answer in {failed.BaseQuestionNumber} question: '{failed.Text}'");
+      }
     }
   }
 }

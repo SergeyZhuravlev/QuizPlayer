@@ -1,56 +1,164 @@
 {
-  "QuizCaption": "QuizCaption",
-  "QuestionsPerQuiz": 2,
+  "QuizCaption": "Quiz Computer Knowledge Example",
+  "QuestionsPerQuiz": 5,
   "OnlyOneRightAnswerPerQuestionByDefault": false,
-  "MinimalAnsweredQuestionsPercentForQuizSuccess": 100,
+  "MinimalAnsweredQuestionsPercentForQuizSuccess": 50,
   "Questions": [
     {
-      "Text": "QuizQuestion1",
+      "Text": "Which of the following is an input device?",
       "Answers": [
         {
-          "Text": "QuizAnswer1"
+          "Text": "Mouse",
+          "RightAnswer": true
         },
         {
-          "Text": "QuizAnswer2",
+          "Text": "Light pen",
+          "RightAnswer": true
+        },
+        {
+          "Text": "VDU",
+        },
+        {
+          "Text": "Keyboard",
+          "RightAnswer": true
+        },
+        {
+          "MustBeLastAnswer": true,
+          "Text": "None of these",
+        }
+      ]
+    },
+    {
+      "Text": "Which full form of SQL is wrong?",
+      "Answers": [
+        {
+          "Text": "Straight Query Language",
+          "RightAnswer": true
+        },
+        {
+          "Text": "Structured Query Layson",
+          "RightAnswer": true
+        },
+        {
+          "Text": "Structured Query Langauge",
+        },
+        {
+          "Text": "Structured Query Linear",
+          "RightAnswer": true
+        },
+        {
+          "MustBeLastAnswer": true,
+          "Text": "All above is right"
+        }
+      ]
+    },
+    {
+      "Text": "Which of the following is not an example of hardware?",
+      "Answers": [
+        {
+          "Text": "Scanner"
+        },
+        {
+          "Text": "Monitor"
+        },
+        {
+          "Text": "Printer"
+        },
+        {
+          "Text": "Interpreter",
           "RightAnswer": true
         }
       ]
     },
     {
-      "Text": "QuizQuestion2",
-      "OnlyOneRightAnswerPerQuestion": false,
+      "Text": "In internet terminology IP means",
+      "OnlyOneRightAnswerPerQuestion": true,
       "Answers": [
         {
-          "Text": "QuizAnswer1"
+          "Text": "Internet Provider"
         },
         {
-          "Text": "QuizAnswer2",
+          "Text": "Internet Procedure"
+        },
+        {
+          "Text": "Internet Protocol",
           "RightAnswer": true
         },
         {
-          "Text": "QuizAnswer3",
-          "RightAnswer": true
+          "Text": "Internet Processor"
         },
         {
-          "Text": "QuizAnswer4"
+          "MustBeLastAnswer": true,
+          "Text": "None of these",
+        },
+        {
+          "MustBeLastAnswer": true,
+          "Text": "All of these",
         }
       ]
     },
     {
-      "Text": "QuizQuestion3",
+      "Text": "WWW provides standardized access to",
       "Answers": [
         {
-          "Text": "QuizAnswer1"
+          "Text": "GOPHER"
         },
         {
-          "Text": "QuizAnswer2"
+          "Text": "TELNET"
         },
         {
-          "Text": "QuizAnswer3",
+          "Text": "FTP"
+        },
+        {
+          "MustBeLastAnswer": true,
+          "Text": "None of these",
           "RightAnswer": true
         },
         {
-          "Text": "QuizAnswer4"
+          "MustBeLastAnswer": true,
+          "Text": "All of the above",
+        }
+      ]
+    },
+    {
+      "Text": "Which of the following transport layer protocol is used to support electronic mail directly?",
+      "OnlyOneRightAnswerPerQuestion": true,
+      "Answers": [
+        {
+          "Text": "SMTP",
+          "RightAnswer": true
+        },
+        {
+          "Text": "IP"
+        },
+        {
+          "Text": "TCP"
+        },
+        {
+          "Text": "UDP"
+        }
+      ]
+    },
+    {
+      "Text": "Which is the correct match about OSI?\n\ni) Network Layer ------- a) Establishes, Manages and terminates sessions\nii) Transport Layer ------- b) Format and code conversion services\niii) Session Layer ------- c) Process to process delivery of the entire message\niv) Presentation Layer ------- d) Connecting independent networks",
+      "OnlyOneRightAnswerPerQuestion": true,
+      "Answers": [
+        {
+          "Text": "i)-d ii)-c iii)-a iv)-b",
+          "RightAnswer": true
+        },
+        {
+          "Text": "i)-a ii)-b iii)-c iv)-d"
+        },
+        {
+          "Text": "i)-b ii)-a iii)-d iv)-c"
+        },
+        {
+          "Text": "i)-d ii)-c iii)-b iv)-a"
+        },
+        {
+          "MustBeLastAnswer": true,
+          "Text": "None of these",
         }
       ]
     }

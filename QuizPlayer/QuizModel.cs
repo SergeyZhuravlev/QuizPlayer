@@ -23,18 +23,12 @@ namespace QuizPlayer
     public void NextQuestion()
     {
       if (questionEnumerator.MoveNext())
-      {
         CurrentQuestion = questionEnumerator.Current;
-        ++QuestionNumber;
-      }
       else
-      {
         CompletedQuiz = true;
-      }
     }
 
     public bool CompletedQuiz { get; private set; }
-    public int QuestionNumber { get; private set; }
     public int QuestionCount => Questions.Count;
     public int RightAnsweredQuestionCount => Questions.Count(q => q.UserRightAnswered);
     public int RightAnsweredPercent => Math.Min(Convert.ToInt32(100.0 * RightAnsweredQuestionCount / QuestionCount), 100);
