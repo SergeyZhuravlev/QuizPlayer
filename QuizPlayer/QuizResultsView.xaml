@@ -17,7 +17,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid Background="{Binding Path=CurrentViewModel.SuccessPassedQuiz, Converter={StaticResource BooleanToARGBColorBrushConverter}, ConverterParameter=FFFF8888|FF88FF88, Mode=OneWay}">
+    <Grid Background="{Binding Path=CurrentViewModel.SuccessPassedQuiz, Converter={StaticResource BooleanToARGBColorBrushConverter}, ConverterParameter=FFFF8888|FF88FF88, Mode=OneTime}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*"/>
             <ColumnDefinition Width="200*"/>
@@ -25,9 +25,24 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="10*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="200*" />
             <RowDefinition Height="10*" />
         </Grid.RowDefinitions>
-
+        <TextBlock Grid.Column="1" Grid.Row="1" TextAlignment="Center" FontSize="32" FontWeight="Bold" Text="{Binding Path=CurrentViewModel.YouResultClassify, Mode=OneTime}"/>
+        <TextBlock Grid.Column="1" Grid.Row="3" TextAlignment="Center" FontSize="16" FontWeight="Bold" Text="{Binding Path=CurrentViewModel.TestResults, Mode=OneTime}"/>
+        <TextBlock Grid.Column="1" Grid.Row="5" TextAlignment="Left" FontSize="16" FontWeight="Bold" Text="Wrong answered questions:" Visibility="{Binding Path=CurrentViewModel.AllRight, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=FalseToVisible, Mode=OneTime}"/>
+        <ListBox Grid.Column="1" Grid.Row="7" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding Path=CurrentViewModel.WrongQuestionList}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock TextWrapping="WrapWithOverflow" VerticalAlignment="Stretch" Text="{Binding Mode=OneTime}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </UserControl>

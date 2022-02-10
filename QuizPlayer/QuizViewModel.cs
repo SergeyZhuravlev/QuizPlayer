@@ -74,7 +74,14 @@ namespace QuizPlayer
     public int RightAnsweredQuestionCount => QuizModel.RightAnsweredQuestionCount;
     public int RightAnsweredPercent => QuizModel.RightAnsweredPercent;
     public bool SuccessPassedQuiz => QuizModel.SuccessPassedQuiz;
-    public IEnumerable<QuestionViewModel> WrongQuestionList => QuizModel.WrongQuestionList.Cast<QuestionViewModel>();
+    public bool AllRight => QuestionCount == RightAnsweredQuestionCount;
+    public string YouResultClassify => SuccessPassedQuiz ? "You are passed" : "You are failed";
+    public string TestResults => $"{RightAnsweredQuestionCount}/{QuestionCount} ({RightAnsweredPercent}%)";
+    public IEnumerable<string> WrongQuestionList =>
+      QuizModel
+      .WrongQuestionList
+      .Cast<QuestionViewModel>()
+      .Select(q => $"{q.BaseQuestionNumber}. {q.Text}");
   }
 
   public class QuizViewModel : BindableBase
