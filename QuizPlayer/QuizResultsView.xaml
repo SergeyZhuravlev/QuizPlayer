@@ -17,7 +17,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid Background="{StaticResource BackgroundColor}">
+    <Grid Background="{Binding Path=CurrentViewModel.SuccessPassedQuiz, Converter={StaticResource BooleanToARGBColorBrushConverter}, ConverterParameter=FFFF8888|FF88FF88, Mode=OneWay}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*"/>
             <ColumnDefinition Width="200*"/>

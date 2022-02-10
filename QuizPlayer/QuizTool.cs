@@ -24,6 +24,15 @@ namespace QuizPlayer
     }
   }
 
+  public static class StringExtension
+  {
+    public static IEnumerable<string> ChunkSplit(this string str, int chunkSize)
+    {
+      return Enumerable.Range(0, str.Length / chunkSize)
+          .Select(i => str.Substring(i * chunkSize, chunkSize));
+    }
+  }
+
   public enum ConvertType
   {
     CompiledQuiz,

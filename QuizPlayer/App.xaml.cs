@@ -66,7 +66,7 @@ namespace QuizPlayer
         return;
       }
       var viewModelData = new QuizDomainViewModel(quiz);
-      var quizModel = new QuizModel(viewModelData.Questions);
+      var quizModel = new QuizModel(viewModelData.Questions, viewModelData.MinimalAnsweredQuestionsPercentForQuizSuccess);
       var quizViewModel = new QuizViewModel(viewModelData.QuizCaption, quizModel);
       var window = new MainWindow();
       window.DataContext = quizViewModel;

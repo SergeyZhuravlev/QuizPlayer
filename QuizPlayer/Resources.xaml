@@ -4,6 +4,7 @@
     <local:AnswerStateToColorBrushConverter x:Key="AnswerStateToColorBrushConverter"/>
     <local:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
     <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    <local:BooleanToARGBColorBrushConverter x:Key="BooleanToARGBColorBrushConverter"/>
     <SolidColorBrush x:Key="TextColor" Color="Black" />
     <SolidColorBrush x:Key="BorderColor" Color="DarkBlue" />
     <LinearGradientBrush x:Key="BackgroundColor" StartPoint="0,0" EndPoint="1,0">

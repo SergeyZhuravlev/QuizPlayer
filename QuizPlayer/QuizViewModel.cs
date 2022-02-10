@@ -73,6 +73,7 @@ namespace QuizPlayer
     public int QuestionCount => QuizModel.QuestionCount;
     public int RightAnsweredQuestionCount => QuizModel.RightAnsweredQuestionCount;
     public int RightAnsweredPercent => QuizModel.RightAnsweredPercent;
+    public bool SuccessPassedQuiz => QuizModel.SuccessPassedQuiz;
     public IEnumerable<QuestionViewModel> WrongQuestionList => QuizModel.WrongQuestionList.Cast<QuestionViewModel>();
   }
 
