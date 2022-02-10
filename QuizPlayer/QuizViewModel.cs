@@ -3,10 +3,11 @@ using Prism.Mvvm;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace QuizPlayer
 {
-  public class QuizFlowViewModel : BindableBase
+  public class QuizFlowViewModel : BindableBase, ISelectionChanging
   {
     private QuizModel QuizModel { get; }
     private QuizViewModel QuizViewModel { get; }
@@ -20,7 +21,7 @@ namespace QuizPlayer
     }
 
     private QuizFlowView view;
-    public QuizFlowView View => view is null ? view = new() : view;
+    public QuizFlowView View => view is null ? view = new(this) : view;
 
     public QuestionViewModel CurrentQuestion => (QuestionViewModel)QuizModel.CurrentQuestion;
     public string QuestionNumberText => CurrentQuestion.QuestionNumber + ".";
@@ -55,6 +56,14 @@ namespace QuizPlayer
       RaisePropertyChanged(nameof(ButtonCaption));
       RaisePropertyChanged(nameof(CurrentQuestion));
       RaisePropertyChanged(nameof(QuestionNumberText));
+    }
+
+    public void OnSelectionChanged(object sender, SelectionChangedEventArgs args)
+    {
+      var answer = (sender as ListBox).SelectedItem as AnswerViewModel;
+      if (answer is null)
+        return;
+      answer.UserAnswer = !answer.UserAnswer;
     }
   }
 
@@ -104,6 +113,5 @@ namespace QuizPlayer
         RaisePropertyChanged(nameof(CurrentViewModel));
       }
     }
-
   }
 }
