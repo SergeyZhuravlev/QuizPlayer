@@ -17,8 +17,8 @@ namespace QuizPlayer
   public enum AnswerState
   {
     NotAnswered,
-    WrongAnswered,
-    RightAnswered
+    Right,
+    Wrong
   }
 
   public class AnswerViewModel : BindableBase, IAnswer
@@ -81,9 +81,8 @@ namespace QuizPlayer
     public AnswerState AnswerState =>
       (!UserAnswered)
       ? AnswerState.NotAnswered
-      : (UserRightAnswered
-        ? (UserAnswer ? AnswerState.RightAnswered : AnswerState.NotAnswered)
-        : AnswerState.WrongAnswered);
+      : (RightAnswer ? AnswerState.Right 
+        : (UserAnswer ? AnswerState.Wrong : AnswerState.NotAnswered));
 
     public bool UserRightAnswered => UserAnswer == RightAnswer;
   }

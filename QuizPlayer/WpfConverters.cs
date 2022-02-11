@@ -34,9 +34,9 @@ namespace QuizPlayer
         {
           case AnswerState.NotAnswered:
             return new SolidColorBrush(Colors.Transparent);
-          case AnswerState.RightAnswered:
+          case AnswerState.Right:
             return new SolidColorBrush(Colors.Green);
-          case AnswerState.WrongAnswered:
+          case AnswerState.Wrong:
             return new SolidColorBrush(Colors.Red);
         }
       }
