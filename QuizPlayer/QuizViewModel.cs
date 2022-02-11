@@ -86,7 +86,7 @@ namespace QuizPlayer
     public int RightAnsweredPercent => QuizModel.RightAnsweredPercent;
     public bool SuccessPassedQuiz => QuizModel.SuccessPassedQuiz;
     public bool AllRight => QuestionCount == RightAnsweredQuestionCount;
-    public string YouResultClassify => SuccessPassedQuiz ? "You are passed" : "You are failed";
+    public string YouResultClassify => SuccessPassedQuiz ? "You passed" : "You failed";
     public string TestResults => $"{RightAnsweredQuestionCount}/{QuestionCount} ({RightAnsweredPercent}%)";
     public IEnumerable<string> WrongQuestionList =>
       QuizModel
