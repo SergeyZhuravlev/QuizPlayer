@@ -32,8 +32,10 @@ namespace QuizPlayer
       {
         switch (state)
         {
-          case AnswerState.NotAnswered:
+          case AnswerState.NotAnsweredYet:
             return new SolidColorBrush(Colors.Transparent);
+          case AnswerState.NotAnswered:
+            return new SolidColorBrush(Colors.Yellow);
           case AnswerState.Right:
             return new SolidColorBrush(Colors.Green);
           case AnswerState.Wrong:

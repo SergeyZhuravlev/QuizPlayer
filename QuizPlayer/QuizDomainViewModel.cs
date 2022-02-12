@@ -16,6 +16,7 @@ namespace QuizPlayer
 
   public enum AnswerState
   {
+    NotAnsweredYet,
     NotAnswered,
     Right,
     Wrong
@@ -78,11 +79,21 @@ namespace QuizPlayer
       }
     }
 
-    public AnswerState AnswerState =>
-      (!UserAnswered)
-      ? AnswerState.NotAnswered
-      : (RightAnswer ? AnswerState.Right 
-        : (UserAnswer ? AnswerState.Wrong : AnswerState.NotAnswered));
+    public AnswerState AnswerState
+    {
+      get
+      {
+        if (!UserAnswered)
+          return AnswerState.NotAnsweredYet;
+        if (RightAnswer && UserAnswer)
+          return AnswerState.Right;
+        if (RightAnswer && !UserAnswer)
+          return AnswerState.NotAnswered;
+        if ((!RightAnswer) && UserAnswer)
+          return AnswerState.Wrong;
+        return AnswerState.NotAnsweredYet;
+      }
+    }
 
     public bool UserRightAnswered => UserAnswer == RightAnswer;
   }
@@ -119,7 +130,7 @@ namespace QuizPlayer
     public string Text { get; }
 
     public IReadOnlyCollection<IAnswer> AnswersVariance => Answers;
-    public IReadOnlyCollection<AnswerViewModel> Answers { get; }
+    public IReadOnlyCollection<AnswerViewModel> Answers { get; private set; }
 
     public bool OnlyOneRightAnswerPerQuestion { get; }
 
@@ -128,6 +139,16 @@ namespace QuizPlayer
     public int QuestionNumber { get; }
 
     public bool UserRightAnswered => Answers.All(a => a.UserRightAnswered);
+
+    public bool UserAnyAnswered => Answers.Any(a => a.UserAnswer);
+
+    public void UserAnswered()
+    {
+      foreach (var answer in Answers)
+        answer.UserAnswered = true;
+      /*Answers = Answers.Where(a => a.UserAnswer || a.RightAnswer).ToList();
+      RaisePropertyChanged(nameof(Answers));*/
+    }
 
     private void OnAnswerChanged(object sender, PropertyChangedEventArgs e)
     {
@@ -139,17 +160,7 @@ namespace QuizPlayer
       foreach (var answer in Answers.Where(a => !a.UserAnswerLocked))
         answer.UserAnswer = false;
     }
-    
-
-    public bool UserAnyAnswered => Answers.Any(a => a.UserAnswer);
-
-    public void UserAnswered()
-    {
-      foreach (var answer in Answers)
-        answer.UserAnswered = true;
-    }
   }
-
 
   public class QuizDomainViewModel
   {
